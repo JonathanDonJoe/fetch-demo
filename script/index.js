@@ -1,27 +1,17 @@
 const {log } = console;
-log('is this thing on?')
+log('is this thing on?');
+
 
 // write a function called makeBreakfast
-// log(eggs)
 
-const makeBreakfast = (bacon) => {
-    // log(bacon.image)
-    const URL = bacon.image
-    document.body.style.backgroundImage = `url(${URL})`
-}
-
-
-const prepareBreakfast = (rawEggs) => {
+const makeBreakfast = (rawEggs) => {
     const pancakes = rawEggs.results[0];
-    localStorage.setItem('char', pancakes.name)
-    // const oatMeal = localStorage.getItem('char')
-    // log(pancakes)
-    makeBreakfast(pancakes)
-
+    localStorage.setItem('char', JSON.stringify(pancakes));
 }
-
-
-
+const cookBacon = function() {
+    const URL = JSON.parse(localStorage.getItem('char')).image;
+    document.body.style.backgroundImage = `url(${URL})`;
+}
 
 // fetch something
 // 3 step process
@@ -30,10 +20,19 @@ const prepareBreakfast = (rawEggs) => {
 // JSON object
 
 const URL = `https://rickandmortyapi.com/api/character`;
-const shouldHaveStayedOnTheHappyPath = fetch(URL)
-.then(response => response.json())
-.then(eggs => {
-    prepareBreakfast(eggs)
-})
 
+// const shouldHaveStayedOnTheHappyPath = fetch(URL)
+// .then(response => response.json())
+// .then(eggs => {
+//     makeBreakfast(eggs);
+//     cookBacon()
+// })
 
+async function fetchMyData() {
+    const fetchedData = await fetch(URL);
+    const jsonifiedFetchData = await fetchedData.json();
+    const bacon = makeBreakfast(jsonifiedFetchData);
+    cookBacon()
+}
+
+fetchMyData()
